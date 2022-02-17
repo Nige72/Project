@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -6,6 +6,8 @@ import os
 
 # create a flask instance
 app = Flask(__name__)
+
+# Secret key password enviromental variable
 app.config['SECRET_KEY'] = os.environ.get("DB_PASS")
 
 #create a form class
@@ -27,12 +29,12 @@ def index():
 def user(name):
     return render_template("user.html",user_name=name)
 
-#Invalid URL
+# Create Invalid URL
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
 
-#Internal server error
+# Create Internal server error
 @app.errorhandler(500)      
 def page_not_found(e):
     return render_template("500.html"), 500
@@ -42,14 +44,15 @@ def page_not_found(e):
 def name():
     name = None
     form = NamerForm()
-    #validate Form
+#validate the Form
     if form.validate_on_submit():
         name = form.name.data
         form.name.data = ''
+        flash("Form Submitted Successfully")
     return render_template("name.html", name=name, form=form)
 
 
-
+#hello
 
 if __name__ == "__main__":
     app.run(debug=True)
