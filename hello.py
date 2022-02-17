@@ -15,7 +15,7 @@ class NamerForm(FlaskForm):
     name = StringField("What is your name:", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
-# Index Html
+# Index(main) Html
 @app.route('/')
 def index():
     first_name = "Nige"
@@ -52,7 +52,7 @@ def name():
     return render_template("name.html", name=name, form=form)
 
 
-#hello
+
 
 if __name__ == "__main__":
     app.run(debug=True)

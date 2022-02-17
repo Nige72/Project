@@ -3,7 +3,7 @@
 {% block content %}
 {% for message in get_flashed_messages() %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{ message}}
+    Hey {{name}} - {{ message}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
@@ -13,6 +13,13 @@
 
 {% if name %}
     <h1>Hello {{ name }}!!</h1>
+    <br>
+    <img src="{{ url_for('static',filename='images/del.jpg')}}">
+    <br><br>
+    <p id="demo">This is stuff</p> 
+<script> src="{{ url_for('static',filename='myfile.js')}}"</script>
+
+                  
 {% else %}
     <h1>What's your name?</h1>
     <br>
