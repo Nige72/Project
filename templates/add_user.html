@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+  {% if name %}
+    <h1>User Added:</h1>
+    <br><br><br>
+    {% for our_user in our_users %}
+    {{ our_user.id }} .{{ our_user.name }} - {{ our_user.email }}<br>
+{% endfor %}
+  
+
+                  
+  {% else %}
+    <h1>User List!!</h1>
+    <br>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      {{ form.name.label(class="form-label")}}
+      {{ form.name(class="form-control") }}
+     <br>
+     {{ form.email.label(class="form-label")}}
+     {{ form.email(class="form-control") }}
+    <br>
+      {{ form.submit(class="btn btn-secondary") }}
+    <form>
+  
+  <br><br><br>
+
+
+{%endif %}
+
+{% endblock %}
