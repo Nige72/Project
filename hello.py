@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -26,11 +26,51 @@ class Users(db.Model):
     def __repr__(self):
      return '<Name %r>' % self.name
 
+# Delete Users in Database
+@app.route('/delete/<int:id>')
+def delete(id):
+    user_to_delete = Users.query.get_or_404(id)
+    name = None
+    form=UserForm()
+    try: 
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash("User deleted")
+        our_users = Users.query.order_by(Users.date_added)
+        return render_template("add_user.html",form=form,name=name,our_users=our_users)
+    except:
+        flash("There was a problem")
+        return render_template("add_user.html",form=form,name=name,our_users=our_users)
+
+
+       
+
 # Create a new form for db
 class UserForm(FlaskForm):
     name = StringField("Name:", validators=[DataRequired()])
     email = StringField("Email:", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+# Update Database Record
+@app.route('/update/<int:id>',methods=['GET','POST'])
+def update(id):
+    form = UserForm()
+    name_to_update = Users.query.get_or_404(id)
+    if request.method =="POST":
+        name_to_update.name = request.form['name']
+        name_to_update.email = request.form['email']
+        
+        try:
+            db.session.commit()
+            flash("User Updated Succesfully")
+            return render_template("update.html",form=form,name_to_update=name_to_update)
+        except:
+   
+             flash("Issue with updating")
+             return render_template("update.html",form=form,name_to_update=name_to_update)
+    else:
+        return render_template("update.html",form=form,name_to_update=name_to_update)
+
 
 # Add db Userform route
 @app.route('/user/add', methods=['GET','POST'])
@@ -46,15 +86,11 @@ def add_user():
         name = form.name.data
         form.name.data = ''
         form.email.data = ''
-        flash("Usr added to Database")
+        flash("User added to Database")
     our_users = Users.query.order_by(Users.date_added)
     return render_template("add_user.html",form=form,name=name,our_users=our_users)
 
-
-   
-
-
-# Index(main) Ht
+# Index(main) 
 @app.route('/')
 def index():
     first_name = "Nige"
@@ -62,12 +98,11 @@ def index():
     favourite_pizza = ["Mexican","Cheese","Pepperoni"]
     return render_template("index.html",first_name=first_name,stuff=stuff,favourite_pizza=favourite_pizza)
 
-
 # localhost:5000/user/Nige/ User.html
 @app.route('/user/<name>')
 def user(name):
     return render_template("user.html",user_name=name)
-
+    
 # Create Invalid URL
 @app.errorhandler(404)
 def page_not_found(e):
@@ -83,15 +118,13 @@ def page_not_found(e):
 def name():
     name = None
     form=UserForm()
+
 #validate the Form
     if form.validate_on_submit():
         name = form.name.data
         form.name.data = ''
         flash("Form Submitted Successfully")
     return render_template("name.html",form=form,name=name) 
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
