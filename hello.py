@@ -10,7 +10,8 @@ from datetime import datetime
 # create a flask instance
 app = Flask(__name__)
 # Add Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users1.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Secret key password enviromental variable
 app.config['SECRET_KEY'] = os.environ.get("DB_PASS") 
 # initialize database
@@ -18,12 +19,26 @@ db=SQLAlchemy(app)
 
 # Create Model
 class Users(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    __tablename__ = 'Users'
+    user_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(200),nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
+     return '<Name %r>' % self.name
+
+class Blog(db.Model):
+   __tablename__ = 'Blog'
+   blog_id = db.Column(db.Integer, primary_key = True) 
+   name = db.Column(db.String(250),nullable=False)
+   title = db.Column(db.String(250),nullable=False)
+   content = db.Column(db.Text,nullable=False)
+   author = db.Column(db.String(250),nullable=False)
+   user_id = db.Column(db.Integer, db.ForeignKey('Users.user_id'), nullable=False)
+   date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+   def __repr__(self):
      return '<Name %r>' % self.name
 
 # Delete Users in Database
