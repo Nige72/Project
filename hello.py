@@ -42,7 +42,7 @@ class Posts(db.Model):
    def __repr__(self):
      return '<Name %r>' % self.name
 
-# Create a new form for db
+# Create a Posts form for db
 class PostForm(FlaskForm):
     title = StringField("Title:", validators=[DataRequired()])
     content = StringField("Content:", validators=[DataRequired()],widget=TextArea())
@@ -50,11 +50,22 @@ class PostForm(FlaskForm):
     slug = StringField("Slug:", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+
+@app.route('/posts')
+def posts():
+    # Get the posts from the database
+    posts = Posts.query.order_by(Posts.date_posted)
+    return render_template("posts.html", posts=posts)
+
+@app.route('/posts/<int:id>')
+def post(id):
+    post = Posts.query.get_or_404(id)
+    return render_template("post.html",post=post)
+
 # Add Post Page
 @app.route('/add-post', methods=['GET','POST'])
 def add_post():
     form=PostForm()
-
     if form.validate_on_submit():
       post = Posts(title=form.title.data,content=form.content.data,author=form.author.data,slug=form.slug.data)
      #Clear Form
