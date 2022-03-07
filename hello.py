@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from wtforms.widgets import TextArea
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 
 # create a flask instance
 app = Flask(__name__)
@@ -33,8 +33,9 @@ class Posts(db.Model):
      return '<Name %r>' % self.name
 
 # Create Users Model
-class Users(db.Model):
+class Users(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(20),nullable=False,unique=True)
     name = db.Column(db.String(200),nullable=False)
     email = db.Column(db.String(120),nullable=False,unique=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
