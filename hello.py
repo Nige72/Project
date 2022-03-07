@@ -1,11 +1,13 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from sqlalchemy import ForeignKey
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
+from wtforms.validators import DataRequired, EqualTo, Length
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from wtforms.widgets import TextArea
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # create a flask instance
@@ -17,19 +19,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get("DB_PASS") 
 # initialize database
 db=SQLAlchemy(app)
-
-# Create Users Model
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(200),nullable=False)
-    email = db.Column(db.String(120),nullable=False,unique=True)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
-    
-
-    def __repr__(self):
-     return '<Name %r>' % self.name
-
-
 # Create Posts table
 class Posts(db.Model):
    id = db.Column(db.Integer, primary_key = True) 
@@ -39,8 +28,33 @@ class Posts(db.Model):
    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
    slug = db.Column(db.String(255))
 
+
    def __repr__(self):
      return '<Name %r>' % self.name
+
+# Create Users Model
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(200),nullable=False)
+    email = db.Column(db.String(120),nullable=False,unique=True)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+###Password to be added
+    password_hash = db.Column(db.String(128))
+
+    @property
+    def password(self):
+        raise AttributeError('Password is not a readable attribute')
+
+    @password.setter
+    def password(self,password):
+        self.password_hash = generate_password_hash(password)
+#####
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+    def __repr__(self):
+     return '<Name %r>' % self.name
+
+
 
 # Create a Posts form for db
 class PostForm(FlaskForm):
@@ -98,6 +112,7 @@ def edit_post(id):
 # Add Post Page
 @app.route('/add-post', methods=['GET','POST'])
 def add_post():
+    
     form=PostForm()
     if form.validate_on_submit():
       post = Posts(title=form.title.data,content=form.content.data,author=form.author.data,slug=form.slug.data)
@@ -130,14 +145,21 @@ def delete(id):
     except:
         flash("There was a problem")
         return render_template("add_user.html",form=form,name=name,our_users=our_users)
-
-
-       
-
-# Create a new form for db
+# Create Password Form
+class PassForm(FlaskForm):
+    email = StringField("Email:", validators=[DataRequired()])
+    password_hash = PasswordField("Password:", validators=[DataRequired()])
+    submit = SubmitField("Submit")  
+# Create Name Form
+class NamerForm(FlaskForm):
+    name = StringField("Name:", validators=[DataRequired()])
+    submit = SubmitField("Submit")       
+# Create a new User form for db
 class UserForm(FlaskForm):
     name = StringField("Name:", validators=[DataRequired()])
     email = StringField("Email:", validators=[DataRequired()])
+    password_hash = PasswordField("Password", validators=[DataRequired(), EqualTo("password_hash2", message = "Passwords Must Match")])
+    password_hash2 = PasswordField("Confirm Password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 # Update Database Record
@@ -169,16 +191,37 @@ def add_user():
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
-            user = Users(name=form.name.data, email=form.email.data)
+# Password hash
+            hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
+            user = Users(name=form.name.data, email=form.email.data, password_hash= hashed_pw)
             db.session.add(user)
             db.session.commit()
         name = form.name.data
         form.name.data = ''
         form.email.data = ''
+        form.password_hash.data = ''
         flash("User added to Database")
     our_users = Users.query.order_by(Users.date_added)
     return render_template("add_user.html",form=form,name=name,our_users=our_users)
 
+#create Password testing page
+@app.route('/test_pw', methods=['GET','POST'])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+    form=PassForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password_hash.data
+        form.email.data = ''
+        form.password_hash.data = ''
+# Lookup Users by email
+        pw_to_check = Users.query.filter_by(email=email).first()
+# Check Hashed Password
+        passed = check_password_hash(pw_to_check.password_hash,password)
+    return render_template("test_pw.html",email=email,name=name,password=password,form=form,pw_to_check=pw_to_check,passed=passed) 
 # Index(main) 
 @app.route('/')
 def index():
@@ -206,9 +249,7 @@ def page_not_found(e):
 @app.route('/name', methods=['GET','POST'])
 def name():
     name = None
-    form=UserForm()
-
-#validate the Form
+    form=NamerForm()
     if form.validate_on_submit():
         name = form.name.data
         form.name.data = ''
