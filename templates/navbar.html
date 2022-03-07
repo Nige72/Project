@@ -16,6 +16,15 @@
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('add_user')}}">Add User</a>
           </li>
+          { % if current_ser.is_authenticated % }
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('logout')}}">Login</a>
+          </li>
+          { % else % }
+          <a class="nav-link" href="{{url_for('login')}}">Login</a>
+          </li>
+          ({ % endif % })
+        
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('add_post')}}">Add Blog</a>
           </li>
