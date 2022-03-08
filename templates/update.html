@@ -19,14 +19,9 @@
      
      {{ form.email.label(class="form-label")}}
      {{ form.email(class="form-control",value=name_to_update.email) }}
-
-     {{ form.username.label(class="form-label")}}
-     {{ form.username(class="form-control",value=name_to_update.username) }}
     <br>
-      {{ form.submit(class="btn btn-secondary btn-sm") }}
+      {{ form.submit(class="btn btn-secondary") }}
      
-      <a href="{{ url_for('logout')}}" class="btn btn-secondary btn-sm">Logout</a>
-      <a href="{{ url_for('delete', id=current_user.id)}}"class="btn btn-danger btn-sm">Delete</a>
     <form>
   
 
