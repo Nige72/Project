@@ -1,11 +1,10 @@
-from flask import Flask, render_template, flash, request, redirect, url_for
-from flask_wtf import FlaskForm
-from sqlalchemy import ForeignKey
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
-from wtforms.validators import DataRequired, EqualTo, Length
-import os
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from wtforms.widgets import TextArea
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user, user_loaded_from_request 
+# Although most will install automatically with flask use pip freeze to see what you need ##
+
+Flask
+Flask-Login
+Flask-SQLAlchemy
+Flask-WTF
+pytest
+SQLAlchemy
+Werkzeug
+WTForms
