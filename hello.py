@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
 from sqlalchemy import ForeignKey
@@ -258,16 +259,22 @@ def add_post():
 def delete_posts(id):
     form=PostForm()
     posts_to_delete = Posts.query.get_or_404(id)
-    try:
-        db.session.delete(posts_to_delete)
-        db.session.commit()
-        flash("Post Deleted Succesfully")
-        posts = Posts.query.order_by(Posts.date_posted)
-        return render_template("posts.html", posts=posts,form=form)
-    except:
-        flash("There was problem deleting the post!! ")
-        posts = Posts.query.order_by(Posts.date_posted)
-        return render_template("posts.html", posts=posts)
+    id = current_user.id
+    if id == posts_to_delete.poster.id:
+        try:
+            db.session.delete(posts_to_delete)
+            db.session.commit()
+            flash("Post Deleted Succesfully")
+            posts = Posts.query.order_by(Posts.date_posted)
+            return render_template("posts.html", posts=posts,form=form)
+        except:
+            flash("There was problem deleting the post!! ")
+            posts = Posts.query.order_by(Posts.date_posted)
+            return render_template("posts.html", posts=posts)
+    else:
+         flash("You are not authorised to delete this post!! ")
+         posts = Posts.query.order_by(Posts.date_posted)
+         return render_template("posts.html", posts=posts)
 ##############################################################
 ########### EDIT THE POSTS 
 ########################################
@@ -285,10 +292,15 @@ def edit_post(id):
      db.session.commit()
      flash("Post Updated Succesfully")
      return redirect(url_for('post',id=post.id))
-    form.title.data = post.title
-    form.content.data = post.content
-    form.slug.data = post.slug
-    return render_template("edit_post.html",form=form)
+    if current_user.id == post.poster_id:
+        form.title.data = post.title
+        form.content.data = post.content
+        form.slug.data = post.slug
+        return render_template("edit_post.html",form=form)
+    else:
+        flash("You are not authorised to Edit this post!! ")
+        posts = Posts.query.order_by(Posts.date_posted)
+        return render_template("posts.html", posts=posts)
 ####################################################################################
 ######### DISPLAY THE POSTS
 ##################################################
