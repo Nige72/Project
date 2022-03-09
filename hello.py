@@ -283,14 +283,15 @@ def edit_post(id):
     post = Posts.query.get_or_404(id)
     form = PostForm()
     if form.validate_on_submit():
-     post.title=form.title.data
-     post.content=form.content.data
-     post.slug=form.slug.data
-#Update the Post to the DB
-     db.session.add(post)
-     db.session.commit()
-     flash("Post Updated Succesfully")
-     return redirect(url_for('post',id=post.id))
+      post.title=form.title.data
+      post.content=form.content.data
+      post.slug=form.slug.data
+     #Update the Post to the DB
+      db.session.add(post)
+      db.session.commit()
+      flash("Post Updated Succesfully")
+      return redirect(url_for('post',id=post.id))
+
     if current_user.id == post.poster_id:
         form.title.data = post.title
         form.content.data = post.content
