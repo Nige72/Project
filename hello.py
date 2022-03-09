@@ -10,7 +10,6 @@ from datetime import datetime
 from wtforms.widgets import TextArea
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user, user_loaded_from_request 
-
 # create a flask instance
 app = Flask(__name__)
 # Add Database
