@@ -187,7 +187,7 @@ def add_user():
         form.username.data = ''
         form.email.data = ''
         form.password_hash.data = ''
-        flash("User added to Database")
+        flash("User added to Database now click on login to create posts")
     our_users = Users.query.order_by(Users.date_added)
     return render_template("add_user.html",form=form,name=name,our_users=our_users)
 #################################################################################
@@ -247,7 +247,7 @@ def add_post():
       db.session.add(post)
       db.session.commit()
 
-      flash("Blog Post Submitted")
+      flash("Blog Post Submitted click on posts to view your post")
 
     return render_template("add_post.html",form=form)
 ######################################################################################
