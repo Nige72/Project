@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Setup') { 
             steps { 
-                sh "setup.sh"
+                sh "jenkins/setup.sh"
             }
         }
 //        stage('Make Files'){
