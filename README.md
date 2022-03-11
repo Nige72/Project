@@ -37,21 +37,16 @@ to be able to create posts, read posts, update posts and delete the posts. This 
 * Code integrated into a Version Control System which will be built through a CI server and deployed to a cloud-based virtual machine
 
 ### My Approach
-To achieve this, I have decided to produce a simple stargazing companion app that must allow the user to do the following:
+To achieve this, I have created a User app and blog post app this will:
 * Create a user account (satisfies 'Create') that stores:
    * *User Name*
    * *First and Last Name*
    * *Email*
    * *Password*
-* Create posts of observations that they have made whilst stargazing (satisfies 'Create') with the following information:
+* Create all different types of posts
    * *Title* of the post
-   * *Author* of the post
    * *Date and time* that the post was made
-   * *Observers* who also took part in this observation (essentially tagging other users in a post)
-   * *Location* at which the observation took place
-   * *Azimuth* coordinate of the observed object 
-   * *Altitude* coordinate of the observed object
-   * *Description* of the observation
+   *
 * View and update their account details (satisfies 'Read' and 'Update')
 * Delete their account (satisfies 'Delete')
 * Read observations they and other users have created (satisfies 'Read')
