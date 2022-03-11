@@ -8,10 +8,13 @@ pipeline {
                 sh "pip3 install -r requirements.txt"
             }
         }
-//        stage('Make Files'){
-//            steps {
-//                sh "touch ~/jenkins-blog/file1 ~/jenkins-blog/file2"
-//                junit 'reports/**/*.xml' 
+        stage('Test'){
+            steps {
+                sh "python3 -m pytest"
+                sh "--cov=application"
+                sh "--cov-report term-missing"
+                sh "--cov-report xml:coverage.xml"
+                sh "junit=junit_report.xml"
 //            }
 ////        }
 //        stage('Deploy') {
