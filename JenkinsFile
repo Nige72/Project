@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Setup') { 
             steps { 
-                sh "jenkins/setup.sh"
+                sh "mkdir newdir"
+                sh "cd newdir"
+                sh "touch newfile"
             }
         }
 //        stage('Make Files'){
