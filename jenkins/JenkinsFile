@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Setup') { 
             steps { 
-                sh "bash setup.sh"
+                sh "setup.sh"
             }
         }
 //        stage('Make Files'){
@@ -18,4 +18,5 @@ pipeline {
  //           }
  //       }
  //   }
-//}
+    }
+ }
