@@ -15,8 +15,8 @@ pipeline {
                 sh "--cov-report term-missing"
                 sh "--cov-report xml:coverage.xml"
                 sh "junit=junit_report.xml"
-//            }
-////        }
+           }
+      }
 //        stage('Deploy') {
  //           steps {
  //               sh 'make publish'
