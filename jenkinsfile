@@ -1,11 +1,6 @@
 pipeline {
     agent any
-    environment {
-        SECRET_KEY = credentials('SECRET_KEY')
-        DATABASE_URI = credentials('DATABASE_URI')
-        DOCKER_LOGIN = credentials('DOCKER_LOGIN')
-        SQLPWD = credentials('SQLPWD')
-    }
+    
     stages {
 //this stage sets up the virtual environment for the unit tests
     stage('Setup') {
@@ -26,4 +21,4 @@ pipeline {
                 deactivate
                 rm -rf /venv""" 
             }
-        }
+}
