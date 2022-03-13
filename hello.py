@@ -64,7 +64,7 @@ class PostForm(FlaskForm):
 ################################
 # Create Posts table
 class Posts(db.Model):
-   id = db.Column(db.Integer, primary_key = True) 
+   id = db.Column(db.Integer, primary_key = True)   
    title = db.Column(db.String(250),nullable=False)
    content = db.Column(db.Text,nullable=False)
    #author = db.Column(db.String(250),nullable=False)
