@@ -38,25 +38,22 @@ To achieve this, I have created a User app and blog post app this will:
 
 They are then able to log in or register an account:
 
-[register]
+register (https://github.com/Nige72/project/blob/main/static/images/registration.png)
 
-![login(https://github.com/Nige72/project/blob/main/static/images/login.png)]
+login (https://github.com/Nige72/project/blob/main/static/images/login.png)
 
-Once they are logged in, they now have access to the 'Enter Observation' page and their account page:
+Once they are logged in, they now have access to the 'dashboard' page and their account page:
 
-![Add blog][images/add]
+dashboard (https://github.com/Nige72/project/blob/main/static/images/dashboard.png)
 
-Navigating to the 'Enter Observation' page allows them to post an observation and optionally tag up to two other observers, which will appear at the top of the home page:
-
-![posts][images/posts]
-
-![dashboard][images/dashboard]
-
-Navigating to the 'Account' page allows them to view their account details, update them and delete the account if they so desire. Deleting an account will also delete any observation they are associated with:
-
-![dashboard][images/dashboard]
+Navigating to the 'Add Blog' page allows them to post a blog which will then appear on the posts page:
+Add blog (https://github.com/Nige72/project/blob/main/static/images/add.png)
+posts (https://github.com/Nige72/project/blob/main/static/images/posts.png)
 
 
+Navigating to the 'Dashboard' page allows them to view their account details, update them and delete the account if they so desire. 
+
+dashboard (https://github.com/Nige72/project/blob/main/static/images/dashboard.png)
 
 
 
