@@ -10,16 +10,7 @@ https://user-images.githubusercontent.com/97459850/157671811-b7b5e20e-1fd2-441c-
 ## Contents
 * [Brief](#brief)
    * [Additional Requirements](#additional-requirements)
-   * [My Approach](#my-approach)
-* [Architecture](#architecture)
-   * [Database Structure](#database-structure)
-   * [CI Pipeline](#ci-pipeline)
-* [Project Tracking](#project-tracking)
-* [Risk Assessment](#risk-assessment)
-* [Testing](#testing)
-* [Front-End Design](#front-end-design)
-* [Known Issues](#known-issues)
-* [Future Improvements](#future-improvements)
+   * [My Approach](#my-approach))
 * [Authors](#authors)
 
 ## Brief
@@ -27,14 +18,7 @@ We have been tasked to build an app which uses the crud methodology meaning to c
 I have decided to build a Blog Webpage which will incorporate all of these features. You will be able to once registered and logged in
 to be able to create posts, read posts, update posts and delete the posts. This will be using a one to many database relationship. 
 
-### Additional Requirements
-* A Trello board
-* A relational database, consisting of two tables that model a relationship
-* Documentation of the design, build phase, running phase and complete phase. Including a video of running application
-* A python-based functional application.
-* Test suites for the application, which will include automated tests for validation of the application
-* A front-end website, created using Flask
-* Code integrated into a Version Control System which will be built through a CI server and deployed to a cloud-based virtual machine
+
 
 ### My Approach
 To achieve this, I have created a User app and blog post app this will:
@@ -54,9 +38,9 @@ To achieve this, I have created a User app and blog post app this will:
 
 They are then able to log in or register an account:
 
-![register][images/registration]
+[register]
 
-![login][images/login]
+![login(https://github.com/Nige72/project/blob/main/static/images/login.png)]
 
 Once they are logged in, they now have access to the 'Enter Observation' page and their account page:
 
